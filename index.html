@@ -1,6 +1,93 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h1>Welcome</h1>
-  </body>
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("https://www.enjpg.com/img/2020/outer-space-background-3.jpg");
+            background-position: center;
+        }
+
+        .image {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            object-fit: cover;
+            z-index: 1;
+            transform: translate(-105px, -30px);
+        }
+
+        .tv {
+            content: "";
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-image: url("https://img3.freepng.fr/dy/12952665ea65fd5193de268e9e814285/L0KzQYi4UsIxN6p9iZGAYUPkR7PtgcJjbGE9TpC9NEG1R4WAV8E2OWQ8UKQ7Nka0R4q8V8I2QV91htk=/5a3a7bfa2bd086.44127477151378226617957259.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 1075px;
+        }
+
+        .tv-snow {
+            content: "";
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-image: url("https://media.giphy.com/media/Zu6e7EHfGghIk/giphy.gif");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 1050px;
+        }
+
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img id="image" class="image"/>
+    <div class="tv">
+    </div>
+</div>
+<script>
+    var image = document.getElementById("image")
+    var keywords = [
+        "dog", "cat", "lama", "fun", "funny", "wtf"
+    ]
+    var randomImage = function () {
+        fetch(`https://api.giphy.com/v1/gifs/random?api_key=cxRdO3psGyVeWrVcHYlVCQSHyKso25zn&tag=${keywords[Math.floor(Math.random() * keywords.length)]}&rating=g`).then((response) => {
+            var contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                return response.json().then(function (json) {
+                    image.setAttribute("src", json.data.images.downsized.url)
+                });
+            }
+        })
+    }
+    var reload = function () {
+        image.setAttribute("src", "https://media.giphy.com/media/Zu6e7EHfGghIk/giphy.gif")
+        setTimeout(randomImage, 500)
+    }
+    reload()
+    setInterval(reload, 6000);
+</script>
+</body>
 </html>
